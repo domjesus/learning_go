@@ -1,18 +1,35 @@
 package main
 
 import (
-	Contas "banco/Contas"
 	"fmt"
+
+	// Clientes "github.com/domjesus/banco/clientes"
+	Contas "github.com/domjesus/banco/contas"
+	// Clientes "github.com/domjesus/banco/clientes"
 )
 
 func main() {
-	contaJose := Contas.ContaCorrente{Nome: "Jose Manoel", Saldo: 3500}
-	contaMaria := Contas.ContaCorrente{Nome: "Maria", Saldo: 2500}
+	contaExemplo := Contas.ContaPoupanca{}
 
-	status := contaJose.Transferir(800, &contaMaria)
+	contaExemplo.Depositar(1100)
+	pagarBoleto(&contaExemplo, 700)
 
-	fmt.Println(status)
-	fmt.Println(contaJose, contaMaria)
+	fmt.Println(contaExemplo.GetSaldo())
+	// clienteJose := Clientes.Titular{"Jose Manoel da Silva", "123.123.123-55", "Dev master"}
+	// contaJose := Contas.ContaCorrente{clienteJose, 1234, 321654, 100.00}
+	// contaJose := Contas.ContaCorrente{Titular: Clientes.Titular{Nome: "Nome do titular", CPF: "987654987", Profissao: "Dev"}, Saldo: 1500., NumeroAgencia: 1500, NumeroConta: 1234}
+
+	// fmt.Println(contaJose)
+	// cliente := Clientes.Titular{Nome: "NOSE MANOEL CLIENTE", CPF: "45654987"}
+	// fmt.Println(cliente)
+
+	// contaJose := Contas.ContaCorrente{Nome: "Jose Manoel", Saldo: 3500}
+	// contaMaria := Contas.ContaCorrente{Nome: "Maria", Saldo: 2500}
+
+	// status := contaJose.Transferir(800, &contaMaria)
+
+	// fmt.Println(status)
+	// fmt.Println(contaJose, contaMaria)
 
 	// contaDoManoel := ContaCorrente{"Manoel da Silveira", 4596, 456548, 1500.00}
 	// fmt.Println(contaDoManoel.sacar(650.55), contaDoManoel)
@@ -28,4 +45,12 @@ func main() {
 	// depositoMsg, saldo := contaJose.depositar(float64(valorDeposito))
 	// fmt.Println(depositoMsg, "No valor de: ", valorDeposito, "O saldo é: ", saldo)
 
+}
+
+type verificarConta interface {
+	Sacar(valor float64) string
+}
+
+func pagarBoleto(conta verificarConta, valorDoBoleto float64) {
+	conta.Sacar(valorDoBoleto)
 }

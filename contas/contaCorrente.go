@@ -1,22 +1,25 @@
 package Contas
 
-import "math"
+import (
+	"math"
+
+	"github.com/domjesus/banco/clientes"
+)
 
 type ContaCorrente struct {
-	Nome          string
-	NumeroAgencia int
-	NumeroConta   int
-	Saldo         float64
+	Titular                    Clientes.Titular
+	NumeroAgencia, NumeroConta int
+	saldo                      float64
 }
 
-func (c *ContaCorrente) sacar(valorSaque float64) string {
-	podeSacar := valorSaque <= c.Saldo && valorSaque > 0
+func (c *ContaCorrente) Sacar(valorSaque float64) string {
+	podeSacar := valorSaque <= c.saldo && valorSaque > 0
 
 	if podeSacar {
-		c.Saldo -= math.Abs(valorSaque)
+		c.saldo -= math.Abs(valorSaque)
 		return "Saque de realizado com sucesso!"
 	} else {
-		return ("Saldo insuficiente ou número incorreto!")
+		return ("saldo insuficiente ou número incorreto!")
 	}
 
 	// return " alguma coisa"
@@ -28,22 +31,25 @@ func (c *ContaCorrente) sacar(valorSaque float64) string {
 func (c *ContaCorrente) Depositar(valorDeposito float64) (string, float64) {
 
 	if valorDeposito <= 0 {
-		return "Para depositar deve ser informado número positivo!", c.Saldo
+		return "Para depositar deve ser informado número positivo!", c.saldo
 	}
 
-	c.Saldo += valorDeposito
-	return "Depósito feito com sucesso!", c.Saldo
+	c.saldo += valorDeposito
+	return "Depósito feito com sucesso!", c.saldo
 }
 
 func (c *ContaCorrente) Transferir(valorTransferencia float64, contaDestino *ContaCorrente) bool {
 
-	if valorTransferencia <= c.Saldo && valorTransferencia > 0 {
-		c.Saldo -= valorTransferencia
+	if valorTransferencia <= c.saldo && valorTransferencia > 0 {
+		c.saldo -= valorTransferencia
 		contaDestino.Depositar(valorTransferencia)
 		return true
 		//FAZ TRANSFERENCIA
 	} else {
 		return false
 	}
+}
 
+func (c *ContaCorrente) GetSaldo() float64 {
+	return c.saldo
 }
